@@ -179,16 +179,21 @@ public class AddressBook implements AddressIF {
     }
 
     @Override
+    public ArrayList<ContactPerson> getContact() {
+        return null;
+    }
+
+    @Override
     public void displayContents() {
         System.out.println("----- Contents of the Address Book : " + addressBookName + " -----");
         for (int index = 0; index < numberOfEntries; index++) {
             System.out.println(contactList[index]);
         }
-            System.out.println("-----------------------------------------");
-        }
-
-        @Override
-        public String toString () {
-            return addressBookName;
-        }
+        System.out.println("-----------------------------------------");
     }
+
+    @Override
+    public String toString() {
+        return addressBookName;
+    }
+}
