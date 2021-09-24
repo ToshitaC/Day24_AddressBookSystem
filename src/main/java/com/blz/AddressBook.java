@@ -5,8 +5,10 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class AddressBook implements AddressIF {
+    private final int NUM_OF_PEOPLE = 5;
     Scanner scannerObject = new Scanner(System.in);
-    ArrayList<ContactPerson> contactList = new ArrayList<ContactPerson>();
+    ContactPerson[] contactList = new ContactPerson[NUM_OF_PEOPLE];
+    public static int numberOfEntries = 0;
 
     @Override
     public void operation() {
@@ -14,7 +16,7 @@ public class AddressBook implements AddressIF {
         do {
 
             System.out.println("\nChoose the operation you want to perform");
-            System.out.println("1.Add To Address Book\n2.Edit Existing Entry\n3.Display Address bookDelete Contact\\n5.Exit Address book System");
+            System.out.println("1.Add To Address Book\n2.Edit Existing Entry\n3.Display Address book\n4.Delete Contact\n5.Exit Address book System");
 
             switch (scannerObject.nextInt()) {
                 case 1:
@@ -41,54 +43,65 @@ public class AddressBook implements AddressIF {
 
     @Override
     public void addContact() {
+        System.out.println("Enter number of people you want to add to Addres book");
+        int numberOfPeople = scannerObject.nextInt();
+        int endIterator = numberOfPeople + numberOfEntries;
 
-        ContactPerson person = new ContactPerson();
-        Address address = new Address();
+        if (endIterator > NUM_OF_PEOPLE) {
+            System.out.println("Address Book is FULL !");
+            System.out.println("You can add: " + (NUM_OF_PEOPLE - numberOfEntries));
+            return;
+        } else {
+            for (int index = numberOfEntries; index < endIterator; index++) {
 
-
-        System.out.println("Enter First Name: ");
-        String firstName = scannerObject.next();
-
-        System.out.println("Enter Last Name: ");
-        String lastName = scannerObject.next();
-
-        System.out.println("Enter Phone Number: ");
-        long phoneNumber = scannerObject.nextLong();
-
-        System.out.println("Enter Email: ");
-        String email = scannerObject.next();
-
-        System.out.println("Enter City: ");
-        String city = scannerObject.next();
-
-        System.out.println("Enter State: ");
-        String state = scannerObject.next();
-
-        System.out.println("Enter Zip Code: ");
-        long zipCode = scannerObject.nextLong();
+                ContactPerson person = new ContactPerson();
+                Address address = new Address();
+                System.out.println("Enter the details of Person " + (index + 1));
 
 
-        person.setFirstName(firstName);
-        person.setLastName(lastName);
-        person.setPhoneNumber(phoneNumber);
-        person.setEmail(email);
-        address.setCity(city);
-        address.setState(state);
-        address.setZip(zipCode);
-        person.setAddress(address);
-        contactList.add(person);
+                System.out.println("Enter First Name: ");
+                String firstName = scannerObject.next();
 
+                System.out.println("Enter Last Name: ");
+                String lastName = scannerObject.next();
+
+                System.out.println("Enter Phone Number: ");
+                long phoneNumber = scannerObject.nextLong();
+
+                System.out.println("Enter Email: ");
+                String email = scannerObject.next();
+
+                System.out.println("Enter City: ");
+                String city = scannerObject.next();
+
+                System.out.println("Enter State: ");
+                String state = scannerObject.next();
+
+                System.out.println("Enter Zip Code: ");
+                long zipCode = scannerObject.nextLong();
+
+
+                person.setFirstName(firstName);
+                person.setLastName(lastName);
+                person.setPhoneNumber(phoneNumber);
+                person.setEmail(email);
+                address.setCity(city);
+                address.setState(state);
+                address.setZip(zipCode);
+                person.setAddress(address);
+                contactList[index] = person;
+                numberOfEntries++;
+            }
+        }
     }
 
     public void editPerson() {
 
         System.out.println("Enter the first name:");
         String firstName = scannerObject.next();
-        Iterator<ContactPerson> iterator = contactList.listIterator();
+        for (int index = 0; index < numberOfEntries; index++) {
 
-        while (iterator.hasNext()) {
-
-            ContactPerson person = iterator.next();
+            ContactPerson person = contactList[index];
 
             if (firstName.equals(person.getFirstName())) {
 
@@ -140,14 +153,16 @@ public class AddressBook implements AddressIF {
 
         System.out.println("Enter the first name of the person to be deleted");
         String firstName = scannerObject.next();
-        Iterator<ContactPerson> iterator = contactList.listIterator();
+        for (int index = 0; index < numberOfEntries; index++) {
 
-        while (iterator.hasNext()) {
-
-            ContactPerson person = iterator.next();
+            ContactPerson person = contactList[index];
 
             if (firstName.equals(person.getFirstName())) {
-                contactList.remove(person);
+                for (int nextIndex = index; nextIndex < contactList.length - 1; nextIndex++) {
+                    contactList[nextIndex] = contactList[nextIndex + 1];
+
+                }
+                numberOfEntries--;
                 return;
             }
         }
@@ -155,12 +170,10 @@ public class AddressBook implements AddressIF {
 
     @Override
     public void displayContents() {
-
-        Iterator<ContactPerson> iterator = contactList.iterator();
-        {
-            while (iterator.hasNext()) {
-                System.out.println(iterator.next());
-            }
+        System.out.println("----- Contents of the Address Book -----");
+        for (int index = 0; index < numberOfEntries; index++) {
+            System.out.println(contactList[index]);
+            System.out.println("-----------------------------------------");
         }
     }
 }
