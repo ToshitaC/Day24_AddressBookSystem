@@ -41,5 +41,9 @@ public class AddressBookMain {
         address.setZip(zipCode);
         person.setAddress(address);
 
+        AddressBook addressBook = new AddressBook();
+        addressBook.addContact(person);
+        addressBook.displayContents();
+
     }
 }
